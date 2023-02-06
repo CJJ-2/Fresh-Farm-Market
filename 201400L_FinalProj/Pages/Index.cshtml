@@ -1,0 +1,50 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using System.Text;
+@using _201400L_FinalProj.models
+@using System.Security.Cryptography;
+@using Microsoft.AspNetCore.Http
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model IndexModel
+@inject IHttpContextAccessor contxt
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    
+    @{
+        if (SignInManager.IsSignedIn(User) && contxt.HttpContext.Session.GetString("Username") != null)
+        {
+           
+            //RijndaelManaged cipher = new RijndaelManaged();
+            var name = contxt.HttpContext.Session.GetString("Username");
+    
+                
+			//cipher.KeySize = 256;
+			//cipher.BlockSize = 128;
+   //         cipher.Key = Encoding.UTF8.GetBytes("qwertyuiopqwertyuiopqwertyuiopas");
+   //         cipher.IV = Encoding.UTF8.GetBytes("qwertyuiopasdfgh");
+			//cipher.Padding = PaddingMode.PKCS7;
+			//cipher.Mode = CipherMode.CBC;
+     
+   //         ICryptoTransform decryptTransform = cipher.CreateDecryptor(cipher.Key, cipher.IV);
+            var user = await UserManager.GetUserAsync(User);
+
+
+
+            <h1 class="display-4">Welcome @name</h1>
+            <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        }
+        else
+        {
+            SignInManager.SignOutAsync();
+            contxt.HttpContext.Session.Clear();
+
+          
+            <h1 class="display-4">Welcome</h1>
+            <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        }
+    }
+</div>

@@ -1,0 +1,153 @@
+﻿@page
+@model _201400L_FinalProj.Pages.RegisterModel
+@{
+}
+<style>
+	.passwordInput {
+		margin-top: 5%;
+		text-align: center;
+	}
+
+	.displayBadge {
+		margin-top: 5%;
+		display: none;
+		text-align: center;
+	}
+</style>
+@Html.AntiForgeryToken()
+<div class="container mt-5">
+
+	<div class="row justify-content-center align-items-center">
+
+		<div class="col-sm-12 col-md-12 col-lg-4">
+			<h1 class="mb-3">Register </h1>
+
+			<form method="post" enctype="multipart/form-data" asp-antiforgery="true">
+				<div asp-validation-summary="All" class="text-danger"></div>
+                
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Full_Name">Full name</label>
+					<input type="Text" asp-for="RModel.Full_Name" class="form-control" />
+					<span asp-validaton-for="RModel.Email" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Credit_Card_No">Credit card number</label>
+					<input type="Text" asp-for="RModel.Credit_Card_No" class="form-control" />
+					<span asp-validaton-for="RModel.Credit_Card_No" class="text-danger"></span>
+				</div>
+				
+
+				<div class="row mb-3">
+					<label class="col-sm-2 col-form-label" asp-for="RModel.Gender"></label>
+					<div class="col-sm-10 d-flex align-items-center">
+						<div class="form-check form-check-inline">
+							@Html.RadioButtonFor(m => m.RModel.Gender, "Male",
+							new {@class = "form-check-input"})
+							<label class="form-check-label">Male</label>
+						</div>
+						<div class="form-check form-check-inline">
+							@Html.RadioButtonFor(m => m.RModel.Gender, "Female",
+							new {@class = "form-check-input"})
+							<label class="form-check-label">Female</label>
+						</div>
+						<span asp-validation-for="RModel.Gender" class="text-danger"></span>
+					</div>
+				</div>
+
+				
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Mobile_No">mobile number</label>
+					<input type="Text" asp-for="RModel.Mobile_No" class="form-control" />
+					<span asp-validaton-for="RModel.Mobile_No" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Delivery_Address">Devlivery address</label>
+					<input type="Text" asp-for="RModel.Delivery_Address" class="form-control" />
+					<span asp-validaton-for="RModel.Delivery_Address" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Email">Email Address</label>
+					<input type="Text" asp-for="RModel.Email" class="form-control" />
+					<span asp-validaton-for="RModel.Email" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Password">Password</label>
+					<input type="Text" asp-for="RModel.Password" class="form-control" id="PassEntry" />
+					<span asp-validaton-for="RModel.Password" class="text-danger"></span>
+					<span id="StrengthDisp" class="badge displayBadge">Weak</span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
+					<input type="Text" asp-for="RModel.ConfirmPassword" class="form-control" />
+					<span asp-validaton-for="RModel.ConfirmPassword" class="text-danger"></span>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.AboutMe">about me</label>
+					<input type="Text" asp-for="RModel.AboutMe" class="form-control" />
+					<span asp-validaton-for="RModel.AboutMe" class="text-danger"></span>
+				</div>
+	
+				<div class="mb-3">
+					<label class="form-label" asp-for="RModel.Photo">Profile picture</label>
+					<input type="file" accept=".jpg" asp-for="RModel.Photo" class="form-control" onchange="showImgPreview(this)" /><br />
+					<img id="imgPreview" class="rounded-circle" style="height:300px;width:300px;object-fit:cover"/>
+					<span asp-validaton-for="RModel.Photo" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<button type="submit" class="btn btn-primary">Register</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	function showImgPreview(input) {
+		if (input.files[0]) {
+			var uploadimg = new FileReader();
+			uploadimg.onload = function (displayimg) {
+				$("#imgPreview").attr('src', displayimg.target.result);
+			}
+			uploadimg.readAsDataURL(input.files[0]);
+		}
+	}
+	let timeout;
+	let password = document.getElementById('PassEntry')
+	let strengthBadge = document.getElementById('StrengthDisp')
+
+
+	let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{12,})')
+	let mediumPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{10,})')
+
+	function StrengthChecker(PasswordParameter) {
+		
+
+		if (strongPassword.test(PasswordParameter)) {
+			strengthBadge.style.backgroundColor = "green"
+			strengthBadge.textContent = 'Strong'
+		} else if (mediumPassword.test(PasswordParameter)) {
+			strengthBadge.style.backgroundColor = 'blue'
+			strengthBadge.textContent = 'Medium'
+		} else {
+			strengthBadge.style.backgroundColor = 'red'
+			strengthBadge.textContent = 'Weak'
+		}
+	}
+
+
+
+	password.addEventListener("input", () => {
+		strengthBadge.style.display = 'block'
+		clearTimeout(timeout);
+		timeout = setTimeout(() => StrengthChecker(password.value), 500);
+
+		if (password.value.length !== 0) {
+			strengthBadge.style.display != 'block'
+		} else {
+			strengthBadge.style.display = 'none'
+		}
+	});
+</script>

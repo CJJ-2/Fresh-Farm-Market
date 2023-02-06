@@ -1,0 +1,31 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using System.Text;
+@using _201400L_FinalProj.models
+@using System.Security.Cryptography;
+@using Microsoft.AspNetCore.Http
+@model _201400L_FinalProj.Pages.TwoFactorAuthenticationModel
+@{
+}
+<p>Enter your authentication code</p>
+
+<form method="post">
+    
+    <div class="form-group">
+        <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="TwoFA.Email" value="" id="eid"/>
+        <label>Code</label>
+        <input asp-for="TwoFA.TwoFA" class="form-control" />
+        <span asp-validaton-for="TwoFA.TwoFA" class="text-danger"></span>
+    </div>
+    <button class="btn btn-primary" type="submit">Log In</button>
+    
+</form> 
+
+<script>
+    var queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const birthdate = urlParams.get('e');
+    
+    document.getElementById("eid").value = birthdate;
+</script>

@@ -1,0 +1,26 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using _201400L_FinalProj.models
+@model _201400L_FinalProj.Pages.LogoutModel
+@inject UserManager<ApplicationUser> UserManager
+@{
+}
+
+@{
+	var user = await UserManager.GetUserAsync(User);
+<form method="post">
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-sm-12 col-md-12 col-lg-4">
+				<p> Are you sure you want to logout? </p>
+				<p>
+
+					<input type="hidden" value="@user.Email" asp-for="logout_email" />
+					<button class="btn btn-primary" asp-page-handler="Logout">Yes</button>
+					<button class="btn btn-light ml-5 border-dark" asp-page-handler="DontLogout">No</button>
+				</p>
+			</div>
+		</div>
+	</div>
+    </form>
+}

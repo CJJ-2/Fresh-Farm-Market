@@ -1,0 +1,44 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using System.Text;
+@using _201400L_FinalProj.models
+@using System.Security.Cryptography;
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.DataProtection
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model _201400L_FinalProj.Pages.ProfileModel
+@{
+    //RijndaelManaged cipher = new RijndaelManaged();
+    //cipher.KeySize = 256;
+    //cipher.BlockSize = 128;
+    //cipher.Key = Encoding.UTF8.GetBytes("qwertyuiopqwertyuiopqwertyuiopas");
+    //cipher.IV = Encoding.UTF8.GetBytes("qwertyuiopasdfgh");
+    //cipher.Padding = PaddingMode.PKCS7;
+    //cipher.Mode = CipherMode.CBC;
+
+    //ICryptoTransform decryptTransform = cipher.CreateDecryptor(cipher.Key, cipher.IV);
+
+    var dataProtectionProvider = DataProtectionProvider.Create("EncryptData");
+    var protector = dataProtectionProvider.CreateProtector("MySecretKey");
+    var user = await UserManager.GetUserAsync(User);
+
+    <img src="upload/@protector.Unprotect(user.Photo)" class="rounded-circle" style="height:300px;width:300px;object-fit:cover"/>
+    <h2>Email: <h5>@protector.Unprotect(user.Email)</h5></h2>
+    <p></p>
+    <p></p>
+    <h2>Full Name: <h5>@protector.Unprotect(user.Full_Name)</h5></h2>
+    <p></p>
+    <p></p>
+    <h2>Gender: <h5>@protector.Unprotect(user.Gender)</h5></h2>
+    <p></p>
+    <p></p>
+    <h2>Delivery addresss: <h5>@protector.Unprotect(user.Delivery_Address)</h5></h2>
+    <p></p>
+    <p></p>
+    <h2>About me: <h5>@protector.Unprotect(user.AboutMe)</h5></h2>
+    <p></p>
+    <p></p>
+    <h2>Credit Card No: <h5>@protector.Unprotect(user.Credit_Card_No)</h5></h2>
+
+}

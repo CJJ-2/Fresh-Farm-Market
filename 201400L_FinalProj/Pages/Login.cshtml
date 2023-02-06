@@ -1,0 +1,58 @@
+﻿@page
+@model _201400L_FinalProj.Pages.LoginModel
+
+@{
+}
+
+<div class="container mt-5">
+
+	<div class="row justify-content-center align-items-center">
+
+		<div class="col-sm-12 col-md-12 col-lg-4">
+			<h1 class="mb-3">Login </h1>
+
+			<form method="post" asp-antiforgery="true">
+				<div asp-validation-summary="All" class="text-danger"></div>
+				<div class="mb-3">
+					<label class="form-label" asp-for="Lmodel.Email">Email Address</label>
+					<input type="Text" asp-for="Lmodel.Email" class="form-control" />
+					<span asp-validaton-for="Lmodel.Email" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="Lmodel.Password">Password</label>
+					<input type="Text" asp-for="Lmodel.Password" class="form-control" />
+					<span asp-validaton-for="Password" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3 form-check">
+					<input type="checkbox" asp-for="Lmodel.RememberMe" class="form-check-input" />
+                    <label class="form-check-label" asp-for="Lmodel.RememberMe">Remember Me?</label>
+				
+				</div>
+				<div class="mb-3">
+					<a asp-page="/ForgetPassword">Forget Password?</a>
+				</div>
+				<div class="mb-3">
+					<button type="submit" class="btn btn-primary">
+						Login
+					</button>
+					<input type="hidden" id="foo" name="foo" />
+					
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts
+{
+	<script src="https://www.google.com/recaptcha/api.js?render=6Le7ezQkAAAAAPt4-2XQ8U1TE1-NiulZY4nKEy8l"></script>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6Le7ezQkAAAAAPt4-2XQ8U1TE1-NiulZY4nKEy8l', { action: 'foo' }).then(function (token) {
+                document.getElementById("foo").value = token;
+            });
+        });
+    </script>
+}
